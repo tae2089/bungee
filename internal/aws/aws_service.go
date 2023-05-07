@@ -13,6 +13,7 @@ var (
 
 type AwsServie interface {
 	GetEc2List() error
+	StartInstance(instanceId []string) error
 }
 
 func NewAwsService(client *ec2.Client) AwsServie {
