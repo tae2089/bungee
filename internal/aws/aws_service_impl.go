@@ -14,6 +14,20 @@ type awsServiceImpl struct {
 	client *ec2.Client
 }
 
+// StartInstance implements AwsServie
+func (a *awsServiceImpl) StartInstance(instanceId []string) error {
+	input := &ec2.StartInstancesInput{
+		InstanceIds: instanceId,
+	}
+	// 인스턴스 시작 요청 전송
+	_, err := a.client.StartInstances(context.TODO(), input)
+	if err != nil {
+		return err
+	}
+	fmt.Println("Instance started:", instanceId)
+	return nil
+}
+
 // GetEc2List implements AwsServie
 func (a *awsServiceImpl) GetEc2List() error {
 	input := &ec2.DescribeInstancesInput{}
