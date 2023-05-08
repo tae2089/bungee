@@ -10,6 +10,8 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
+var _ AwsServie = (*awsServiceImpl)(nil)
+
 type awsServiceImpl struct {
 	client *ec2.Client
 }
@@ -25,6 +27,26 @@ func (a *awsServiceImpl) StartInstance(instanceId []string) error {
 		return err
 	}
 	fmt.Println("Instance started:", instanceId)
+	return nil
+}
+
+// StopInstances implements AwsServie
+func (a *awsServiceImpl) StopInstances(instanceId []string) error {
+	input := &ec2.StopInstancesInput{
+		InstanceIds: instanceId,
+	}
+
+	// 인스턴스 stop 요청 전송
+	output, err := a.client.StopInstances(context.TODO(), input)
+
+	if err != nil {
+		return err
+	}
+
+	for _, instance := range output.StoppingInstances {
+		fmt.Println("Instance stoped:", *instance.InstanceId)
+	}
+
 	return nil
 }
 
@@ -59,5 +81,3 @@ func (a *awsServiceImpl) GetEc2List() error {
 
 	return nil
 }
-
-var _ AwsServie = (*awsServiceImpl)(nil)
