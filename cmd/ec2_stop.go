@@ -18,8 +18,7 @@ var (
 			profile := strings.TrimSpace(viper.GetString("profile"))
 			region := strings.TrimSpace(viper.GetString("region"))
 			awsService := di.InitAwsService(profile, region)
-			return awsService.StartInstance(args)
-			// awsService.ListInstances()
+			return awsService.StopInstances(args)
 		},
 	}
 )
