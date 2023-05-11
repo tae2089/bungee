@@ -16,5 +16,10 @@ func InitAwsService(profile, region string) aws.AwsServie {
 }
 
 func InitSshService() ssh.SSHService {
-	return ssh.NewSshService
+	db, err := config.NewDbConfig()
+	if err != nil {
+		return nil
+	}
+	sshService := ssh.NewSshService(db)
+	return sshService
 }
