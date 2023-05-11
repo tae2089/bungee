@@ -1,9 +1,8 @@
 package ssh
 
 import (
+	"database/sql"
 	"sync"
-
-	"github.com/aws/aws-sdk-go-v2/service/ec2"
 )
 
 var (
@@ -11,13 +10,24 @@ var (
 	sshServiceOnce sync.Once
 )
 
-type SSHService interface{}
+type SSHService interface {
+	RegisterSSHInfo(s SshRegisterDto) error
+}
 
-func NewSshService(client *ec2.Client) SSHService {
+func NewSshService(db *sql.DB) SSHService {
 	if sshService == nil {
 		sshServiceOnce.Do(func() {
-			sshService = &sshServiceImpl{}
+			sshService = &sshServiceImpl{
+				db: db,
+			}
 		})
 	}
 	return sshService
+}
+
+type SshRegisterDto struct {
+	Host string
+	Port int
+	User string
+	Key  string
 }
