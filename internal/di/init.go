@@ -1,6 +1,8 @@
 package di
 
 import (
+	"fmt"
+
 	"github.com/tae2089/bungee/internal/aws"
 	"github.com/tae2089/bungee/internal/config"
 	"github.com/tae2089/bungee/internal/ssh"
@@ -18,8 +20,11 @@ func InitAwsService(profile, region string) aws.AwsServie {
 func InitSshService() ssh.SSHService {
 	db, err := config.NewDbConfig()
 	if err != nil {
+		fmt.Println(err)
+		db.Close()
 		return nil
 	}
 	sshService := ssh.NewSshService(db)
+
 	return sshService
 }
