@@ -13,9 +13,10 @@ type sshServiceImpl struct {
 var _ SSHService = (*sshServiceImpl)(nil)
 
 // RegisterSSHInfo implements SSHService
-func (ssh *sshServiceImpl) RegisterSSHInfo(s SshRegisterDto) error {
+func (ssh *sshServiceImpl) RegisterSSHInfo(s *SshRegisterDto) error {
 	// insert data
-	_, err := ssh.db.Exec("INSERT INTO ssh_info (name, user, host, port) VALUES (?,?,?,?)", s.Key, s.User, s.Host, s.Port)
+	defer ssh.db.Close()
+	_, err := ssh.db.Exec("INSERT INTO ssh_info (name, user, host, port) VALUES (?,?,?,?)", s.Name, s.User, s.Host, s.Port)
 	if err != nil {
 		return err
 	}
