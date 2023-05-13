@@ -11,7 +11,8 @@ var (
 )
 
 type SSHService interface {
-	RegisterSSHInfo(s *SshRegisterDto) error
+	RegisterSSHInfo(s *SshRegisterDto, privateKey string) error
+	ShowSSHInfoList() error
 }
 
 func NewSshService(db *sql.DB) SSHService {
@@ -26,8 +27,10 @@ func NewSshService(db *sql.DB) SSHService {
 }
 
 type SshRegisterDto struct {
-	Host string
-	Port int
-	User string
-	Name string
+	Host     string
+	Port     int
+	User     string
+	Name     string
+	Key      string
+	Password string
 }
