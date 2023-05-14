@@ -14,3 +14,11 @@ func Test_awsServiceImpl_GetEc2List(t *testing.T) {
 		assert.Nil(t, err)
 	})
 }
+
+func Test_awsServiceImpl_ConnectInstances(t *testing.T) {
+	awsService := di.InitAwsService("", "ap-northeast-2")
+	t.Run("get aws ec2 list", func(t *testing.T) {
+		err := awsService.ConnectInstances("i-xxxxxxxxxxxx")
+		assert.Nil(t, err)
+	})
+}

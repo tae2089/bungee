@@ -13,7 +13,11 @@ func InitAwsService(profile, region string) aws.AwsServie {
 	if err != nil {
 		return nil
 	}
-	awsService := aws.NewAwsService(client)
+	ssmClient, err := config.GetSsmClient(profile, region)
+	if err != nil {
+		return nil
+	}
+	awsService := aws.NewAwsService(client, ssmClient)
 	return awsService
 }
 
